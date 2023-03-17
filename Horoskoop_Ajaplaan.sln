@@ -1,0 +1,35 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33213.308
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Horoskoop_Ajaplaan.Android", "Horoskoop_Ajaplaan.Android\Horoskoop_Ajaplaan.Android.csproj", "{98D6FA51-D244-4043-8EB1-BE822D2B8956}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Horoskoop_Ajaplaan", "Horoskoop_Ajaplaan\Horoskoop_Ajaplaan.csproj", "{A61CEB9F-8179-4E3F-9CB0-162B1DB8021A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{98D6FA51-D244-4043-8EB1-BE822D2B8956}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{98D6FA51-D244-4043-8EB1-BE822D2B8956}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{98D6FA51-D244-4043-8EB1-BE822D2B8956}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{98D6FA51-D244-4043-8EB1-BE822D2B8956}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{98D6FA51-D244-4043-8EB1-BE822D2B8956}.Release|Any CPU.Build.0 = Release|Any CPU
+		{98D6FA51-D244-4043-8EB1-BE822D2B8956}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{A61CEB9F-8179-4E3F-9CB0-162B1DB8021A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A61CEB9F-8179-4E3F-9CB0-162B1DB8021A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A61CEB9F-8179-4E3F-9CB0-162B1DB8021A}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{A61CEB9F-8179-4E3F-9CB0-162B1DB8021A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A61CEB9F-8179-4E3F-9CB0-162B1DB8021A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A61CEB9F-8179-4E3F-9CB0-162B1DB8021A}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9B669D7F-3730-4717-8BAD-FA5231EA341C}
+	EndGlobalSection
+EndGlobal
