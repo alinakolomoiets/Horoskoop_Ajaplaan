@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -17,42 +18,77 @@ namespace Horoskoop_Ajaplaan
         Editor editor;
         DatePicker dp;
         Label lbl;
+        Image img = new Image();
+        Entry entry;
+        Button submit;
         public Horoskoop()
         {
-            image = new Image { Source = "zodiac.png" };
+
+            Title = "Horoskoop";
+            img = new Image { Source = "zodiac.png" };
             lbl = new Label
             {
+
                 BackgroundColor = Color.Gray,
-                Text = "Sinu sünnipäev",
+                Text = "Sinu horoskoop",
                 FontSize= 15,
             };
             dp = new DatePicker
             {
                 Format = "dd-MM-yyyy",
-                TextColor = Color.DarkGray,
+                TextColor = Color.Black,
                 BackgroundColor = Color.LightGray,
             };
             at = new StackLayout
             {
                 Orientation = StackOrientation.Vertical,
-                BackgroundColor = Color.Gray,
+                BackgroundColor = Color.Black,
             };
+            entry = new Entry
+            {
+                Placeholder = "Zodiac",
+                PlaceholderColor = Color.Gray,
+                TextColor = Color.Black
+            };
+
+            submit = new Button
+            {
+                Text = "Submit",
+                TextColor = Color.White,
+                BackgroundColor = Color.Blue,
+                FontSize = 20,
+                Margin = new Thickness(20, 0)
+            };
+
+            submit.Clicked += OnSubmitClicked;
             dp.DateSelected += Dp_DateSelected;
             StackLayout st = new StackLayout
             {
                 Orientation = StackOrientation.Vertical,
                 BackgroundColor = Color.Lavender,
-                Children = { at,dp,lbl,image},
+                Children = { at,dp,lbl,img,entry,submit},
 
             };
             Content = st;
         }
 
+        private void OnSubmitClicked(object sender, EventArgs e)
+        {
+            if (dates.ContainsKey(entry.Text))
+            {
+                var date = dates[entry.Text];
+
+            }
+            else
+            {
+                DisplayAlert("Viga", "Sisestage õigesti", "OK");
+            }
+        }
         private void Dp_DateSelected(object sender, DateChangedEventArgs e)
         {
             var kuu = e.NewDate.Month;
             var paev = e.NewDate.Month;
-            string[] zodiac = { "jaar.png", "sünn.png", "kaksikud.png", "vahk.png", "leo.png", "virgin.png", "kaalu.png", "skorpion.png", "amburs.png", "kaljukits.png", "veevalaline.png", "kalad.png" };
+            string[] zodiac = { "kaljukits.png", "veevalaline.png", "kalad.png" , "jaar.png", "sonn.png", "kaksikud.png", "vahk.png", "leo.png", "virgin.png", "kaalu.png", "skorpion.png", "amburs.png",  };
             string[] kirjeldus ={
             "Kaljukits - hoolikas, tark, aktiivne. Maise elemendi ja Kaljukitse märk on kingitus, et mitte unustada põhieesmärki ja elada kaua. Tseloveness, vastupanu raskustes, vastutus on selle märgi esindajate tugevad omadused. Kaljukits ei karda üksindust, valmis taluma igapäevaseid raskusi, ületama takistusi.",
             "Veevalaja on andekas kujutlusvõimega, idealistlik, intuitiivne. Õhu elementide fikseeritud risti märk - Veevalaja muutub mitterahaliselt, kuid see ei meeldi muutustele, mis on täis vastuolusid. Õiglane individualist, Veevalaja kaldub meeleolumuutusi, seejärel elegantset, seejärel lohakat, kannatab puuduse tõttu isedistsipliinist, otsustav ja hele temperament.",
@@ -70,8 +106,22 @@ namespace Horoskoop_Ajaplaan
             int[] zodiacD = { 21, 20, 21, 22, 23, 23, 23, 23, 22, 22, 20, 19 };
             int index = (paev <= zodiacD[kuu-1])? kuu - 1 : (kuu +10)%12;
             lbl.Text = kirjeldus[index];
-            image= new Image { Source = zodiac[index] };
-
+            img.Source = ImageSource.FromFile(zodiac[index]);
         }
+        private Dictionary<string, DateTime> dates = new Dictionary<string, DateTime>
+        {
+             { "Kaljukits", new DateTime(DateTime.Now.Year, 12, 22) },
+             { "Veevalaja", new DateTime(DateTime.Now.Year, 1, 20) },
+             { "Kalad", new DateTime(DateTime.Now.Year, 2, 19) },
+             { "Jäär", new DateTime(DateTime.Now.Year, 3, 21) },
+             { "Sõnn", new DateTime(DateTime.Now.Year, 4, 21) },
+             { "Kaksikud", new DateTime(DateTime.Now.Year, 5, 22) },
+             { "Vähk", new DateTime(DateTime.Now.Year, 6, 22) },
+             { "Leo", new DateTime(DateTime.Now.Year, 7, 23) },
+             { "Neitsi", new DateTime(DateTime.Now.Year, 8, 23) },
+             { "Kaalud", new DateTime(DateTime.Now.Year, 9, 23) },
+             { "Scorpion", new DateTime(DateTime.Now.Year, 10, 23) },
+             { "Ambur", new DateTime(DateTime.Now.Year, 11, 22) },
+        };
     }
 }
