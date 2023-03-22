@@ -12,39 +12,66 @@ namespace Horoskoop_Ajaplaan
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class Horoskoop : ContentPage
     {
+        Image image;
+        StackLayout at;
+        Editor editor;
         DatePicker dp;
         Label lbl;
         public Horoskoop()
         {
+            image = new Image { Source = "zodiac.png" };
             lbl = new Label
             {
-                Text = "Vali mingi kuupäev",
-                BackgroundColor = Color.Turquoise
+                BackgroundColor = Color.Gray,
+                Text = "Sinu sünnipäev",
+                FontSize= 15,
             };
             dp = new DatePicker
             {
-                Format = "D",
-                MinimumDate = DateTime.Now.AddDays(-5),
-                MaximumDate = DateTime.Now.AddDays(5),
-                TextColor = Color.BlueViolet,
+                Format = "dd-MM-yyyy",
+                TextColor = Color.DarkGray,
+                BackgroundColor = Color.LightGray,
+            };
+            at = new StackLayout
+            {
+                Orientation = StackOrientation.Vertical,
+                BackgroundColor = Color.Gray,
             };
             dp.DateSelected += Dp_DateSelected;
-            AbsoluteLayout abs = new AbsoluteLayout
+            StackLayout st = new StackLayout
             {
-                Children = { lbl, dp }
+                Orientation = StackOrientation.Vertical,
+                BackgroundColor = Color.Lavender,
+                Children = { at,dp,lbl,image},
+
             };
-            AbsoluteLayout.SetLayoutBounds(lbl, new Rectangle(0.1, 0.2, 200, 50));
-            AbsoluteLayout.SetLayoutFlags(lbl, AbsoluteLayoutFlags.PositionProportional);
-            AbsoluteLayout.SetLayoutBounds(lbl, new Rectangle(0.1, 0.5, 300, 50));
-            AbsoluteLayout.SetLayoutFlags(lbl, AbsoluteLayoutFlags.PositionProportional);
-            AbsoluteLayout.SetLayoutBounds(lbl, new Rectangle(0.5, 0.7, 300, 50));
-            AbsoluteLayout.SetLayoutFlags(lbl, AbsoluteLayoutFlags.PositionProportional);
-            Content = abs;
+            Content = st;
         }
 
         private void Dp_DateSelected(object sender, DateChangedEventArgs e)
         {
-            lbl.Text = "Oli valitud kuupäev: " + e.NewDate.ToString("G");
+            var kuu = e.NewDate.Month;
+            var paev = e.NewDate.Month;
+            string[] zodiac = { "jaar.png", "sünn.png", "kaksikud.png", "vahk.png", "leo.png", "virgin.png", "kaalu.png", "skorpion.png", "amburs.png", "kaljukits.png", "veevalaline.png", "kalad.png" };
+            string[] kirjeldus ={
+            "Kaljukits - hoolikas, tark, aktiivne. Maise elemendi ja Kaljukitse märk on kingitus, et mitte unustada põhieesmärki ja elada kaua. Tseloveness, vastupanu raskustes, vastutus on selle märgi esindajate tugevad omadused. Kaljukits ei karda üksindust, valmis taluma igapäevaseid raskusi, ületama takistusi.",
+            "Veevalaja on andekas kujutlusvõimega, idealistlik, intuitiivne. Õhu elementide fikseeritud risti märk - Veevalaja muutub mitterahaliselt, kuid see ei meeldi muutustele, mis on täis vastuolusid. Õiglane individualist, Veevalaja kaldub meeleolumuutusi, seejärel elegantset, seejärel lohakat, kannatab puuduse tõttu isedistsipliinist, otsustav ja hele temperament.",
+            "Kala on loominguline, tundlik, kunstiline. Kalad sulgevad sodiaagi ringi, esindades vee elementide märki. Need on targad ja vastuvõtlikud inimesed, kelle reageerimisvõime viib nad sageli manipulaatoritega suhtlemisele. Kellegi teise mõju kasvanud up, kõrgeim sodiaagimärgid, võime kohaneda Mis tahes ümbritsev olukord ja vastupanu igapäevastele raskustele eristab tüüpilisi kalu.",
+            "Jäär on ambitsioonikas, sõltumatu, kannatamatu. Jäär, tule elementide märk, avab uue sodiaagi tsükli, kuulub tule elementidesse, tal on avastaja, algatuse ja sihikindluse spetsiaalne karisma (kvaliteet). Samuti on rahulik temperament, Jäär ei unusta kunagi oma eesmärgid ja reeglina jõuavad varem või hiljem soovitud.",
+            "Sõnn on põhjalik, muusikaline, praktiline. Maa, looja ja gurmee elementide fikseeritud märk Sõnn kehastab elu armastuse põhimõtet ja selle eeliseid ning sellel on ka visaduse ja praktilisuse omadused. Sõnn teab, kuidas ja armastab töötada, loob kannatlikult mugavad tingimused elu.",
+            "Kaksikud - uudishimulik, õrn, lahke. Õhu elementide liikuva risti märk. Blondidel on tugev iseloom, energiline, iseseisv ja seltskondlik. Need on suhtlevad, rõõmsameelse iseloomu ja temperamentse uudishimuga. Kaksikud loovad hõlpsalt sidemeid paljude erinevate inimestega.",
+            "Vähk on intuitiivne, emotsionaalne, tark, kirglik. Vee elemendi märk on öövalguse egiidi all. Kuu juhtimine mõjutab selle märgi esindajate olemust, muutes nad haavatavate ja tundlike inimeste. Märgi kuu ja vee element annavad vähile empaatiavõime, võimaluse kohe arvata teiste inimeste mõtteid ja püüdlusi. ",
+            "Leo on uhke, iseenda konfident. Tule elementide fikseeritud märk, lõvil on loomise ja visaduse kingitus oma eesmärkide saavutamisel. See on aktiivne inimene, kes püüdleb edu ja populaarsuse poole. Silia, tundlik ja armastav loomus, kuulub sageli emotsioonide mõju alla ja sageli kuulub tunded. See on helde, otsustav ja vapper.",
+            "Neitsi on elegantne, organiseeritud, lahke. Neitsi on maa elementide teine ​​märk, õigluse ja puhtuse isikupärastamine. Tüdruk kehastab korra põhimõtet, mõistuse võidu tunnete üle, võimet näha tervikut üksikasjalikult. Puu on rohkem kui muud märgid Täiskuju, kes püüdleb täiuslikkuse poole kõiges, õpib kogu oma elu, kuid õpetab ka teisi.",
+            "Kaalud on diplomaatiline, kunstiline, intelligentne. Ainus elutu sümbol, sodiaagi ringis, kaalud on õhu elementide teine ​​märk. Selle märgi esindajate laialdaselt tunnusjoon on soov kõiges harmoonia järele. Vaimu ja ebameeldiva tahte võidule mis tahes rivaalitsemise korral toimivad skaalad sageli nii kohtunike rolli kui ka juristidena kõigil tasanditel.",
+            "Skorpion - lummav, kirglik, iseseisv. Scorpio is a fixed sign of the elements of water. Scorpio has natural magnetism and strong character. Disperial, restrained in words and emotions, Scorpio knows how to keep secrets and appreciates loyalty. Scorpio is a sign of internal changes, overcoming weakness, struggle to võidukas lõpp.",
+            "Ambur - seiklushimuline, loominguline, tugev -tallatud. Ambur on märk tule elementidest, tal on juhi väljendunud karisma, püüdleb hariduse poole, energilise ja kirgliku idee poole kogu maailma muutmise idee poole. Amburi Vosya Life püüdleb populaarsuse poole, et tema kõrgele hinnata Lähedaste inimeste töö ja saavutused. Tulistaja saavutab peaaegu alati edu vähemalt ühes paljudes tegevustes."
+            };
+            int[] zodiacD = { 21, 20, 21, 22, 23, 23, 23, 23, 22, 22, 20, 19 };
+            int index = (paev <= zodiacD[kuu-1])? kuu - 1 : (kuu +10)%12;
+            lbl.Text = kirjeldus[index];
+            image= new Image { Source = zodiac[index] };
+
         }
     }
 }
