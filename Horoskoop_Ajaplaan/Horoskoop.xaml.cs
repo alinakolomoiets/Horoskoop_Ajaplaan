@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Security;
 using System.Text;
 using System.Threading.Tasks;
@@ -77,7 +78,6 @@ namespace Horoskoop_Ajaplaan
             if (dates.ContainsKey(entry.Text))
             {
                 var date = dates[entry.Text];
-
             }
             else
             {
