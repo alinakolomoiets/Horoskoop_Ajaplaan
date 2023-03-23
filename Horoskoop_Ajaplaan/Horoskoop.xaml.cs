@@ -14,17 +14,15 @@ namespace Horoskoop_Ajaplaan
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class Horoskoop : ContentPage
     {
-        Image image;
         StackLayout at;
-        Editor editor;
-        DatePicker dp;
-        Label lbl;
+        DatePicker dp ;
+        Label lbl,lbl1;
+        Image img1 = new Image();
         Image img = new Image();
         Entry entry;
         Button submit;
         public Horoskoop()
         {
-
             Title = "Horoskoop";
             img = new Image { Source = "zodiac.png" };
             lbl = new Label
@@ -33,6 +31,13 @@ namespace Horoskoop_Ajaplaan
                 BackgroundColor = Color.Gray,
                 Text = "Sinu horoskoop",
                 FontSize= 15,
+            };
+            lbl1 = new Label
+            {
+
+                BackgroundColor = Color.Gray,
+                Text = "Sinu horoskoop",
+                FontSize = 15,
             };
             dp = new DatePicker
             {
@@ -60,29 +65,15 @@ namespace Horoskoop_Ajaplaan
                 FontSize = 20,
                 Margin = new Thickness(20, 0)
             };
-
-            submit.Clicked += OnSubmitClicked;
             dp.DateSelected += Dp_DateSelected;
             StackLayout st = new StackLayout
             {
                 Orientation = StackOrientation.Vertical,
                 BackgroundColor = Color.Lavender,
-                Children = { at,dp,lbl,img,entry,submit},
+                Children = { at,dp,lbl,img},
 
             };
             Content = st;
-        }
-
-        private void OnSubmitClicked(object sender, EventArgs e)
-        {
-            if (dates.ContainsKey(entry.Text))
-            {
-                var date = dates[entry.Text];
-            }
-            else
-            {
-                DisplayAlert("Viga", "Sisestage õigesti", "OK");
-            }
         }
         private void Dp_DateSelected(object sender, DateChangedEventArgs e)
         {
@@ -98,7 +89,7 @@ namespace Horoskoop_Ajaplaan
             "Kaksikud - uudishimulik, õrn, lahke. Õhu elementide liikuva risti märk. Blondidel on tugev iseloom, energiline, iseseisv ja seltskondlik. Need on suhtlevad, rõõmsameelse iseloomu ja temperamentse uudishimuga. Kaksikud loovad hõlpsalt sidemeid paljude erinevate inimestega.",
             "Vähk on intuitiivne, emotsionaalne, tark, kirglik. Vee elemendi märk on öövalguse egiidi all. Kuu juhtimine mõjutab selle märgi esindajate olemust, muutes nad haavatavate ja tundlike inimeste. Märgi kuu ja vee element annavad vähile empaatiavõime, võimaluse kohe arvata teiste inimeste mõtteid ja püüdlusi. ",
             "Leo on uhke, iseenda konfident. Tule elementide fikseeritud märk, lõvil on loomise ja visaduse kingitus oma eesmärkide saavutamisel. See on aktiivne inimene, kes püüdleb edu ja populaarsuse poole. Silia, tundlik ja armastav loomus, kuulub sageli emotsioonide mõju alla ja sageli kuulub tunded. See on helde, otsustav ja vapper.",
-            "Neitsi on elegantne, organiseeritud, lahke. Neitsi on maa elementide teine ​​märk, õigluse ja puhtuse isikupärastamine. Tüdruk kehastab korra põhimõtet, mõistuse võidu tunnete üle, võimet näha tervikut üksikasjalikult. Puu on rohkem kui muud märgid Täiskuju, kes püüdleb täiuslikkuse poole kõiges, õpib kogu oma elu, kuid õpetab ka teisi.",
+            "Virgin on elegantne, organiseeritud, lahke. Neitsi on maa elementide teine ​​märk, õigluse ja puhtuse isikupärastamine. Tüdruk kehastab korra põhimõtet, mõistuse võidu tunnete üle, võimet näha tervikut üksikasjalikult. Puu on rohkem kui muud märgid Täiskuju, kes püüdleb täiuslikkuse poole kõiges, õpib kogu oma elu, kuid õpetab ka teisi.",
             "Kaalud on diplomaatiline, kunstiline, intelligentne. Ainus elutu sümbol, sodiaagi ringis, kaalud on õhu elementide teine ​​märk. Selle märgi esindajate laialdaselt tunnusjoon on soov kõiges harmoonia järele. Vaimu ja ebameeldiva tahte võidule mis tahes rivaalitsemise korral toimivad skaalad sageli nii kohtunike rolli kui ka juristidena kõigil tasanditel.",
             "Skorpion - lummav, kirglik, iseseisv. Scorpio is a fixed sign of the elements of water. Scorpio has natural magnetism and strong character. Disperial, restrained in words and emotions, Scorpio knows how to keep secrets and appreciates loyalty. Scorpio is a sign of internal changes, overcoming weakness, struggle to võidukas lõpp.",
             "Ambur - seiklushimuline, loominguline, tugev -tallatud. Ambur on märk tule elementidest, tal on juhi väljendunud karisma, püüdleb hariduse poole, energilise ja kirgliku idee poole kogu maailma muutmise idee poole. Amburi Vosya Life püüdleb populaarsuse poole, et tema kõrgele hinnata Lähedaste inimeste töö ja saavutused. Tulistaja saavutab peaaegu alati edu vähemalt ühes paljudes tegevustes."
@@ -108,20 +99,5 @@ namespace Horoskoop_Ajaplaan
             lbl.Text = kirjeldus[index];
             img.Source = ImageSource.FromFile(zodiac[index]);
         }
-        private Dictionary<string, DateTime> dates = new Dictionary<string, DateTime>
-        {
-             { "Kaljukits", new DateTime(DateTime.Now.Year, 12, 22) },
-             { "Veevalaja", new DateTime(DateTime.Now.Year, 1, 20) },
-             { "Kalad", new DateTime(DateTime.Now.Year, 2, 19) },
-             { "Jäär", new DateTime(DateTime.Now.Year, 3, 21) },
-             { "Sõnn", new DateTime(DateTime.Now.Year, 4, 21) },
-             { "Kaksikud", new DateTime(DateTime.Now.Year, 5, 22) },
-             { "Vähk", new DateTime(DateTime.Now.Year, 6, 22) },
-             { "Leo", new DateTime(DateTime.Now.Year, 7, 23) },
-             { "Neitsi", new DateTime(DateTime.Now.Year, 8, 23) },
-             { "Kaalud", new DateTime(DateTime.Now.Year, 9, 23) },
-             { "Scorpion", new DateTime(DateTime.Now.Year, 10, 23) },
-             { "Ambur", new DateTime(DateTime.Now.Year, 11, 22) },
-        };
     }
 }
