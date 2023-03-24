@@ -13,8 +13,8 @@ namespace Horoskoop_Ajaplaan
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class StartPage : ContentPage
     {
-        List<ContentPage> contentPage = new List<ContentPage>() { new Horoskoop()};
-        List<string> tekstid = new List<string> { "Horoskoop"};
+        List<ContentPage> contentPage = new List<ContentPage>() { new Horoskoop(),new Ajaplaan()};
+        List<string> tekstid = new List<string> { "Horoskoop","Ajaplaan"};
         public StartPage()
         {
             StackLayout st = new StackLayout

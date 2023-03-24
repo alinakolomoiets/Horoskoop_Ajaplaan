@@ -16,8 +16,7 @@ namespace Horoskoop_Ajaplaan
     {
         StackLayout at;
         DatePicker dp ;
-        Label lbl,lbl1;
-        Image img1 = new Image();
+        Label lbl;
         Image img = new Image();
         Entry entry;
         Button submit;
@@ -31,13 +30,6 @@ namespace Horoskoop_Ajaplaan
                 BackgroundColor = Color.Gray,
                 Text = "Sinu horoskoop",
                 FontSize= 15,
-            };
-            lbl1 = new Label
-            {
-
-                BackgroundColor = Color.Gray,
-                Text = "Sinu horoskoop",
-                FontSize = 15,
             };
             dp = new DatePicker
             {
