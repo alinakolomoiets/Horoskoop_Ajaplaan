@@ -26,7 +26,6 @@ namespace Horoskoop_Ajaplaan
             img = new Image { Source = "zodiac.png" };
             lbl = new Label
             {
-
                 BackgroundColor = Color.Gray,
                 Text = "Sinu horoskoop",
                 FontSize= 15,
@@ -58,12 +57,11 @@ namespace Horoskoop_Ajaplaan
                 Margin = new Thickness(20, 0)
             };
             dp.DateSelected += Dp_DateSelected;
-            StackLayout st = new StackLayout
+            var st = new StackLayout
             {
                 Orientation = StackOrientation.Vertical,
                 BackgroundColor = Color.Lavender,
-                Children = { at,dp,lbl,img},
-
+                Children = { at,dp,lbl,img}
             };
             Content = st;
         }

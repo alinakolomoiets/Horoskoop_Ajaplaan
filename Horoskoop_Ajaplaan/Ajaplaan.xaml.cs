@@ -25,22 +25,22 @@ namespace Horoskoop_Ajaplaan
             {
                 Text = "Label",
                 FontSize = 20,
-                HorizontalOptions = LayoutOptions.Start,
-                VerticalOptions= LayoutOptions.Center
+                HorizontalOptions = LayoutOptions.Center,
+                VerticalOptions= LayoutOptions.Start
             };
 
             tp = new TimePicker
             {
-                Time = new TimeSpan(12,0,0),
+                Time = new TimeSpan(0,0,0),
                 TextColor = Color.Black,
+                HorizontalOptions= LayoutOptions.Center,
+                VerticalOptions = LayoutOptions.Start
             };
             tp.PropertyChanged += TimePicker_Click;
 
             var st = new StackLayout
             {
-                Orientation = StackOrientation.Horizontal,
-                HorizontalOptions = LayoutOptions.CenterAndExpand,
-                VerticalOptions = LayoutOptions.CenterAndExpand,
+                Orientation = StackOrientation.Vertical,
                 Children = {tp,lbl,img}
             };
             Content = st;
@@ -50,24 +50,24 @@ namespace Horoskoop_Ajaplaan
         {
             if (e.PropertyName == "Time")
             {
-                string[] messages = {  "01:00 - Magama","06:00 - Varahommik","07:00 - Hommilusöök" ,"9:00 - Õppima", "12:00 - Õppima", "13:00 - Lõunasöök", "14:00 -Õppima", "16:00 - Päevane aeg", "17:00 - Päevane aeg", "18:00 - Õhtu", "19:00 - Õhtusöök", "20:00 - Õhtul", "21:00 - Õhtul", "22:00 - Magama", "23:00 -Magama" };
-                string[] imageSources = { "magama.png", "image2.png", "image3.png", "image4.png", "image5.png", "image6.png", "image7.png", "image8.png", "image9.png", "image10.png", "image11.png", "image12.png", "image13.png", "image14.png" };
+                string[] messages = { "01:00 - Magama", "06:00 - Varahommik", "07:00 - Hommikusöök", "8:30 - Õppima", "12:00 - Õppima", "13:00 - Lõunasöök", "14:00 -Õppima", "16:00 - Sport", "17:00 - Kodune aeg", "18:00 - Õhtusöök", "19:00 -Õhtu ", "22:00 - Õhtu", "23:00 -Magama" };
+                string[] imageSources = { "magama.png", "sun.png", "hommikusook.png", "tool.png", "tool.png", "lounasook.png", "tool.png", "sport.png", "kodu.png", "ohtusook.png", "luna.png", "luna.png", "magama.png",  };
                 TimeSpan selectedTime = tp.Time;
-                string message = "";
-                foreach (string msg in messages)
+                int messageIndex = -1;
+                for (int i = 0; i < messages.Length; i++)
                 {
-                    if (selectedTime >= TimeSpan.Parse(msg.Substring(0, 5)))
+                    string[] timeAndMessage = messages[i].Split('-');
+                    if (TimeSpan.TryParse(timeAndMessage[0].Trim(), out TimeSpan messageTime) && messageTime == selectedTime)
                     {
-                        message = msg;
-                    }
-                    else
-                    {
+                        messageIndex = i;
                         break;
                     }
                 }
-                if (!string.IsNullOrEmpty(message))
+                if (messageIndex != -1)
                 {
-                    lbl.Text = message.Split('-')[1].Trim();
+                    string[] timeAndMessage = messages[messageIndex].Split('-');
+                    lbl.Text = timeAndMessage[1].Trim();
+                    img.Source = ImageSource.FromFile(imageSources[messageIndex]);
                 }
             }
         }
