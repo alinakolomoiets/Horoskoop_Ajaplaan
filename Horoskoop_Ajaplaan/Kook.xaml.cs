@@ -13,117 +13,84 @@ namespace Horoskoop_Ajaplaan
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class Kook : ContentPage
     {
-        StackLayout st;
-        Picker  minutePicker;
-        Label lbl;
-        Button start, stop;
-        int remainingSeconds;
-        string currentDish;
-
-        Dictionary<string, int> dishes = new Dictionary<string, int>
-    {
-        { "Chicken", 20 },
-        { "Steak", 30 },
-        { "Fish", 15 },
-    };
+        Button alertButton;
+        Button timerButton;
+        bool timerRunning = false;
+        DateTime endTime;
 
         public Kook()
         {
-            lbl = new Label
+            InitializeComponent();
+            alertButton = new Button
             {
-                BackgroundColor = Color.Gray,
-                Text = "Sinu horoskoop",
-                FontSize = 15,
+                Text = "Toote nimi",
+                HorizontalOptions = LayoutOptions.Center,
+                VerticalOptions = LayoutOptions.CenterAndExpand
             };
-
-            minutePicker = new Picker
+            alertButton.Clicked += AlertButton_Clicked;
+            timerButton = new Button
             {
-                Title = "Minutid",
-                BackgroundColor = Color.LightGray,
+                Text = "Määra taimer",
+                FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Button)),
+                HorizontalOptions = LayoutOptions.Center,
+                VerticalOptions = LayoutOptions.CenterAndExpand
             };
-            for (int i = 0; i <= 59; i++)
+            //timerButton.Clicked += TimerButton_Clicked;
+            Content = new StackLayout
             {
-                minutePicker.Items.Add(i.ToString("D2"));
-            }
-
-            start = new Button
-            {
-                Text = "Start",
-                BackgroundColor = Color.Green,
-                TextColor = Color.White,
-            };
-
-            stop = new Button
-            {
-                Text = "Stop",
-                BackgroundColor = Color.Red,
-                TextColor = Color.White,
-                IsEnabled = false,
-            };
-
-            start.Clicked += OnStartClicked;
-            stop.Clicked += OnStopClicked;
-
-            var st = new StackLayout
-            {
-                Orientation = StackOrientation.Vertical,
-                Children = { lbl, minutePicker, start, stop }
-            };
-            Content = st;
-        }
-
-        private void OnStopClicked(object sender, EventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-
-        private void OnStartClicked(object sender, EventArgs e)
-        {
-            currentDish = ""; // Сброс текущего блюда
-            remainingSeconds = 0; // Сброс оставшегося времени
-            stop.IsEnabled = true; // Включение кнопки Stop
-            start.IsEnabled = false; // Отключение кнопки Start
-            lbl.Text = "Cooking in progress...";
-            var selectedMinutes = int.Parse(minutePicker.SelectedItem.ToString());
-            var now = DateTime.Now;
-            foreach (var dish in dishes)
-            {
-                if (remainingSeconds >= dish.Value * 60)
-                {
-                    currentDish = dish.Key;
-                    break;
+                Children = {
+                    alertButton,
+                    timerButton
                 }
-            }
-            if (currentDish == "")
+            };
+        }
+        int[] minutes = { 10, 20, 30, 40, 50 };
+        string[] toites = { "Kana", "Sealiha", "Pitza", "Kalkun", "Veseliha" };
+
+        private async void AlertButton_Clicked(object sender, EventArgs e)
+        {
+            string[] timeChoices = Array.ConvertAll(minutes, x => x.ToString() + " minutit");
+            string timeChoice = await DisplayActionSheet("Valige aeg:", "Tühista", null, timeChoices);
+
+            string toitChoice = await DisplayActionSheet("Valige toit:", "Tühista", null, toites);
+
+            if (timeChoice != "Tühista")
             {
-                lbl.Text = "No dish selected for cooking";
-                stop.IsEnabled = false;
-                start.IsEnabled = true;
+                int index = Array.IndexOf(timeChoices, timeChoice);
+                endTime = DateTime.Now.AddMinutes(minutes[index]);
+
+                timerRunning = true;
+                timerButton.Text = "Tühista taimer";
+                Device.StartTimer(TimeSpan.FromSeconds(1), OnTimerTick);
+
+                await Task.Delay(TimeSpan.FromMinutes(minutes[index]));
+
+                await DisplayAlert("Taimer lõppes", "Valitud toit: " + toitChoice, "OK");
+            }
+        }
+
+        private bool OnTimerTick()
+        {
+            if (timerRunning)
+            {
+                if (DateTime.Now >= endTime)
+                {
+                    alertButton.Text = "Valmis!";
+                    timerRunning = false;
+                    timerButton.Text = "Määra taimer";
+                    return false;
+                }
+                else
+                {
+                    TimeSpan remainingTime = endTime - DateTime.Now;
+                    alertButton.Text = string.Format("{0}:{1:00}", (int)remainingTime.TotalMinutes, remainingTime.Seconds);
+                    return true;
+                }
             }
             else
             {
-                var timer = new Timer(state =>
-                {
-                    remainingSeconds--;
-                    if (remainingSeconds == 0)
-                    {
-                        Device.BeginInvokeOnMainThread(() =>
-                        {
-                            lbl.Text = $"{currentDish} on valmis!";
-                            stop.IsEnabled = false;
-                            start.IsEnabled = true;
-                        });
-                        (state as Timer).Dispose();
-                    }
-                    else
-                    {
-                        var remainingTimeSpan = TimeSpan.FromSeconds(remainingSeconds);
-                        Device.BeginInvokeOnMainThread(() =>
-                        {
-                            lbl.Text = $"{currentDish} saab sisse {remainingTimeSpan.Hours}:{remainingTimeSpan.Minutes}:{remainingTimeSpan.Seconds}";
-                        });
-                    }
-                }, null, 0, 1000);
+                alertButton.Text = "";
+                return false;
             }
         }
     }
