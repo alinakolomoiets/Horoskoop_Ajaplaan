@@ -13,13 +13,15 @@ namespace Horoskoop_Ajaplaan
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class Kook : ContentPage
     {
-        Button alertButton;
-        Button timerButton;
+        readonly Image toitImage;
+        readonly Button alertButton;
+        readonly Button timerButton;
         bool timerRunning = false;
         DateTime endTime;
 
         public Kook()
         {
+            toitImage = new Image { Source = "ggf.png" };
             InitializeComponent();
             alertButton = new Button
             {
@@ -44,8 +46,10 @@ namespace Horoskoop_Ajaplaan
                 }
             };
         }
+
         int[] minutes = { 10, 20, 30, 40, 50 };
         string[] toites = { "Kana", "Sealiha", "Pitza", "Kalkun", "Veseliha" };
+        string[] images = { "kana.png", "sealiha.png", "pitza.png", "kalkun.png", "veseliha.png" };
 
         private async void AlertButton_Clicked(object sender, EventArgs e)
         {
@@ -59,6 +63,13 @@ namespace Horoskoop_Ajaplaan
                 int index = Array.IndexOf(timeChoices, timeChoice);
                 endTime = DateTime.Now.AddMinutes(minutes[index]);
 
+                if (toitChoice != "Tühista")
+                {
+                    int index1 = Array.IndexOf(toites, toitChoice);
+                    string imageSource = images[index1].ToLower();
+                    toitImage.Source = ImageSource.FromFile(imageSource);
+                }
+
                 timerRunning = true;
                 timerButton.Text = "Tühista taimer";
                 Device.StartTimer(TimeSpan.FromSeconds(1), OnTimerTick);
@@ -71,27 +82,20 @@ namespace Horoskoop_Ajaplaan
 
         private bool OnTimerTick()
         {
-            if (timerRunning)
+            if (DateTime.Now >= endTime)
             {
-                if (DateTime.Now >= endTime)
-                {
-                    alertButton.Text = "Valmis!";
-                    timerRunning = false;
-                    timerButton.Text = "Määra taimer";
-                    return false;
-                }
-                else
-                {
-                    TimeSpan remainingTime = endTime - DateTime.Now;
-                    alertButton.Text = string.Format("{0}:{1:00}", (int)remainingTime.TotalMinutes, remainingTime.Seconds);
-                    return true;
-                }
+                timerButton.Text = "Alusta taimerit";
+                toitImage.Source = null;
+                timerRunning = false;
+                return false;
             }
             else
             {
-                alertButton.Text = "";
-                return false;
+                TimeSpan remainingTime = endTime - DateTime.Now;
+                timerButton.Text = string.Format("{0}:{1:00}", (int)remainingTime.TotalMinutes, remainingTime.Seconds);
+                return true;
             }
         }
+
     }
 }
